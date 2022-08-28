@@ -1729,7 +1729,7 @@ if test "$enableval" = "yes" ; then
   if test "$ac_cv_cygwin" = "yes"; then
     TKOGLOPTS="-D_WIN32"
   else
-    TKOGLXLIB="-lXmu -lXext"
+    TKOGLXLIB="-lX11 -lXmu -lXext"
   fi
 
 #--------------------------------------------------------------------------
