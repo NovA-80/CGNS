@@ -697,7 +697,7 @@ if not "%debug%" == "" (
   set lopts=/release
 )
 if %do64bit% == 1 (
-  set copts=%copts% /Wp64
+  set copts=%copts%
   set windir=WIN64
 ) else (
   set windir=WIN32
@@ -743,7 +743,7 @@ if exist c:\Tcl\include\tcl.h (
   goto tclincludes
 )
 if exist c:\progra~1\Tcl\include\tcl.h (
-  set tcldir=c:c:\progra~1\Tcl
+  set tcldir=c:\progra~1\Tcl
   goto tclincludes
 )
 if exist %drive%\Tcl\include\tcl.h (
@@ -973,12 +973,21 @@ echo.>> cgnstypes.h
 echo #define CG_MAX_INT32 0x7FFFFFFF>> cgnstypes.h
 echo #ifdef _WIN32>> cgnstypes.h
 echo #define CG_LONG_T    __int64>> cgnstypes.h
-echo #ifdef CG_BUILD_64BIT>> cgnstypes.h
-echo #define stat _stat32i64>> cgnstypes.h
-echo #endif>> cgnstypes.h
 echo #else>> cgnstypes.h
 echo # define CG_LONG_T long long>> cgnstypes.h
 echo #endif>> cgnstypes.h
+echo.>> cgnstypes.h
+echo #ifdef BUILD_HDF5>> cgnstypes.h
+echo /* ---------------------------------------------------------------->> cgnstypes.h
+echo  * convert between HDF5 and ADF ids>> cgnstypes.h
+echo  * ---------------------------------------------------------------- */>> cgnstypes.h
+echo.>> cgnstypes.h
+echo #define to_ADF_ID(ID,ADF_ID) memcpy(^&(ADF_ID),^&(ID),sizeof(hid_t))>> cgnstypes.h
+echo #define to_HDF_ID(ADF_ID,ID) memcpy(^&(ID),^&(ADF_ID),sizeof(hid_t))>> cgnstypes.h
+echo.>> cgnstypes.h
+echo #endif>> cgnstypes.h
+echo.>> cgnstypes.h
+echo #define CG_HAVE_STAT64_STRUCT  1 >> cgnstypes.h
 echo.>> cgnstypes.h
 echo #if CG_BUILD_LEGACY>> cgnstypes.h
 echo # define CG_SIZEOF_SIZE    32 >> cgnstypes.h
@@ -2217,7 +2226,7 @@ echo $(OBJDIR)\cgns_error.$(O) : cgns_error.c cgnslib.h cgns_header.h cgns_io.h>
 echo 	$(CC) $(COPTS) $(COOUT)$@ /c cgns_error.c>> Makefile
 echo.>> Makefile
 echo $(OBJDIR)\cgns_internals.$(O) : cgns_internals.c cgnslib.h cgns_header.h cgns_io.h>> Makefile
-echo 	$(CC) $(COPTS) $(COOUT)$@ /c cgns_internals.c>> Makefile
+echo 	$(CC) $(COPTS) $(HDF5INC) $(COOUT)$@ /c cgns_internals.c>> Makefile
 echo.>> Makefile
 echo $(OBJDIR)\cgns_io.$(O) : cgns_io.c cgnslib.h cgns_io.h \>> Makefile
 set includes=adf\ADF.h
