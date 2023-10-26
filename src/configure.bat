@@ -581,6 +581,11 @@ if '%1' == '' (
   echo ERROR:tcl directory arg to -tcl not given
   goto usage
 )
+if %1 == none (
+  echo TCL searching is disabled
+  set "tcldir=dummy"
+  goto got_tcldir
+)
 for %%a in ( %args% ) do (
   if %1 == %%a (
     echo ERROR:tcl directory arg to -tcl not given
@@ -604,6 +609,11 @@ shift
 if '%1' == '' (
   echo ERROR:tk directory arg to -tk not given
   goto usage
+)
+if %1 == none (
+  echo TK searching is disabled
+  set "tkdir=dummy"
+  goto got_tkdir
 )
 for %%a in ( %args% ) do (
   if %1 == %%a (
@@ -672,8 +682,12 @@ echo   -szip [sziplib] : use szip. "sziplib" is the pathname to the library.
 echo        If "sziplib" is not given, the current drive is searched.
 echo   -mpi [mpidir] : build MPI interface. "mpidir" is the MPI toplevel
 echo        directory. If "mpidir" is not given, the current drive is searched.
-echo   -tcl tcldir : specify the Tcl source directory
-echo   -tk tkdir : specify the Tk source directory
+echo   -tcl tcldir : specify the Tcl source directory. If "tcl" is not given,
+echo        the current drive is searched. If you specify "tcl" as none,
+echo        the TCL source searching is disabled.
+echo   -tk tkdir : specify the Tk source directory. If "tk" is not given,
+echo        the current drive is searched. If you specify "tk" as none,
+echo        the TK source searching is disabled.
 echo   -nocut : build cgnsplot without cutting plane
 echo   -nomesh : build cgnsplot without structured mesh boundaries
 echo   -install instdir : install to directory "instdir" (default %instdir%)
