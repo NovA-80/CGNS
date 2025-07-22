@@ -1,16 +1,18 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.8)
+
 if(COMMAND cmake_policy)
   cmake_policy(SET CMP0003 NEW)
-  if (${CMAKE_MAJOR_VERSION} GREATER 2 OR ${CMAKE_MINOR_VERSION} GREATER 7)
-    cmake_policy(SET CMP0015 OLD)
-  endif (${CMAKE_MAJOR_VERSION} GREATER 2 OR ${CMAKE_MINOR_VERSION} GREATER 7)
 endif(COMMAND cmake_policy)
+
+if (${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.10")
+  cmake_policy(SET CMP0015 NEW)
+endif()
+if (${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.13")
+  cmake_policy(SET CMP0081 NEW)
+endif()
 
 set(CMAKE_BUILD_TYPE "Release" CACHE STRING
   "one of: Release, Debug, RelWithDebInfo or MinSizeRel")
-if (${CMAKE_MAJOR_VERSION} GREATER 2 OR ${CMAKE_MINOR_VERSION} GREATER 7)
-  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Release;Debug;RelWithDebInfo;MinSizeRel")
-endif (${CMAKE_MAJOR_VERSION} GREATER 2 OR ${CMAKE_MINOR_VERSION} GREATER 7)
 
 project("cgns" C)
 set(CGNS_VERSION "3.4.2")
